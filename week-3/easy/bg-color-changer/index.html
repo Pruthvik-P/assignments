@@ -3,19 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bg-color-changer</title>
+    <title>bg changer</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body style="background-color: yellow;">
-    <div class="container" style="display: flex; width: ; ">
-        <div style="display: flex; f">Red</div>
-        <div style="display: flex;">Yellow</div>
-        <div style="display: flex;">Black</div>
-        <div style="display: flex;">Purple</div>
-        <div style="display: flex;">Green</div>
-        <div style="display: flex;">Blue</div>
-        <div style="display: flex;">Default</div>
-    </div>
-</body>
+<body>
+    <div class="Title">
+        <input type="text" id="input">
+        <h3 onclick="addcolor()">Add new color</h3></div>
+    
 
+    <div id="container">
+
+        <button class="button" id="red" onclick="color('red')">Red</button>
+        <button class="button" id="yellow" onclick="color('yellow')">Yellow</button>
+        <button class="button" id="green" onclick="color('green')">Green</button>
+        <button class="button" id="blue" onclick="color('blue')">Blue</button>
+        <button class="button" id="black" onclick="color('black')">Black</button>
+        <button class="button" id="purple" onclick="color('purple')">Purple</button>
+
+    </div>
+
+
+    <script>
+
+        function addcolor(){
+           
+         const input = document.getElementById("input")
+         if(input.value ==''){
+            alert("please input color first")
+            return;
+         }
+          const container= document.getElementById("container")
+          const button= document.createElement("button")
+          button.innerHTML = input.value
+          button.setAttribute("id",`${input.value}`)
+          button.setAttribute("class","button")
+          container.appendChild(button)
+          button.onclick = function() {
+              color(input.value);
+            };
+            button.style.backgroundColor=`${input.value}`
+            input.value = '';
+         }
+          
+
+        
+       
+        function color(value){
+         document.body.style.backgroundColor= value
+        }
+
+    </script>
+    
+</body>
 </html>
