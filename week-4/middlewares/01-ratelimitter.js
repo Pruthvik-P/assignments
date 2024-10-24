@@ -1,6 +1,7 @@
 // You have to create a middleware for rate limiting a users request based on their username passed in the header
 
 const express = require('express');
+const { resetInterval } = require('./solution/01-ratelimitter');
 const app = express();
 
 // Your task is to create a global middleware (app.use) which will
@@ -13,54 +14,48 @@ const app = express();
 
 
 
-
-const requestLimit = 2; // Number of allowed requests per second
-const rateLimitWindow = 1000; // 1 second in milliseconds
-
 let numberOfRequestsForUser = {};
 
-// Middleware for rate limiting
 app.use((req, res, next) => {
-    const userId = req.headers['user-id'];
+  const userId = req.header('user-id');
 
-    if (!userId) {
-        return res.status(400).send({ error: 'User ID is required' });
-    }
+  if (!userId){
+    return res.status(400).json({ error: 'user-id is required' });
+  }
 
-    const now = Date.now();
-    if (!numberOfRequestsForUser[userId]) {
-         numberOfRequestsForUser[userId]= {count:1 ,starttime:now}}
-         else{
-          const userDate = numberOfRequestsForUser[userId];
-          if(now - userDate.starttime > rateLimitWindow){
-            numberOfRequestsForUser[userId] = {count :1, starttime:now}
+  const currentTime = Math.floor(Date.now()/1000);
 
-          }else{
-            userDate.count += 1;
-            if(userDate.count > requestLimit){
-              return res.status(404).json({
-                error:"rate limit excessed"
-              })
-            }
-          }
-         }
+  if(!numberOfRequestsForUser[userId]){
+    numberOfRequestsForUser[userId] = {count:0, lastRequestTime: currentTime};
+  }
+  const userData = numberOfRequestsForUser[userId];
 
-    next();
-});
+  if(currentTime === userData.lastRequestTime){
+    userData.count += 1;
+  } else{
+    userData.count = 1;
+    userData.lastRequestTime = currentTime;
+  }
 
-// Route handlers
-app.get('/user', (req, res) => {
-    res.status(200).json({ name: 'john' ,
-      USERID : 'john'
-    });
-});
-
-app.post('/user', (req, res) => {
-    res.status(200).json({ msg: 'Created dummy user' });
-});
+  if(userData.count > 5){
+    return res.status(404).json({error:"Too many requests"})
+  }
+  next();
 
 
-
-app.listen(3000,()=>{
-  console.log("port is running")
 })
+
+
+resetInterval = setInterval(() => {
+    numberOfRequestsForUser = {};
+}, 1000)
+
+app.get('/user', function(req, res) {
+  res.status(200).json({ name: 'john' });
+});
+
+app.post('/user', function(req, res) {
+  res.status(200).json({ msg: 'created dummy user' });
+});
+
+module.exports = app;
