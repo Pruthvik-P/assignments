@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager</title>
+
+  <!-- Font Awesome Link -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .container {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .category {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 10px;
+      width: 23%;
+      min-height: 300px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+    .category h2 {
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .task {
+      background-color: #f9f9f9;
+      margin-bottom: 10px;
+      padding: 15px;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      cursor: grab;
+      font-size: 16px;
+      position: relative; /* Needed for icon positioning */
+    }
+    .task p {
+      margin-top: 5px;
+      font-size: 14px;
+      color: #777;
+    }
+    .add-task {
+      margin-top: auto;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 6px;
+      color: white; /* Text color */
+      background: linear-gradient(45deg, #007bff, #00c6ff); /* Gradient color */
+      transition: background 0.3s ease, transform 0.2s ease; /* Smooth transition */
+    }
+    .add-task:hover {
+      background: linear-gradient(45deg, #0056b3, #0096d6); /* Darker gradient on hover */
+      transform: scale(1.05); /* Slightly enlarge the button on hover */
+    }
+    .category.drag-over {
+      border: 2px dashed #007bff;
+    }
+
+    /* Difficulty Badge Styles */
+    .difficulty {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      color: white;
+      margin-top: 5px;
+    }
+
+    .easy {
+      background-color: #28a745;  /* Green for Easy */
+    }
+    .medium {
+      background-color: #ffc107;  /* Yellow for Medium */
+    }
+    .hard {
+      background-color: #dc3545;  /* Red for Hard */
+    }
+
+    /* Task Icon Styling */
+    .task-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: #777;  /* Icon color */
+      font-size: 16px;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .task-icon:hover {
+      color: #333;  /* Darker color on hover */
+    }
+
+  </style>
+</head>
+<body>
+
+<h1>Task Manager</h1>
+
+<div class="container">
+  <!-- To Do Column -->
+  <div class="category" id="todo" ondragover="allowDrop(event)" ondrop="drop(event)">
+    <h2>To Do</h2>
+    <div class="task" draggable="true" ondragstart="drag(event)" id="task1">
+      <i class="fa-solid fa-bars-staggered task-icon"></i> <!-- Font Awesome icon -->
+      <strong>TODO DO</strong>
+      <p>TODO DO DOD OD</p>
+      <span class="difficulty medium">Medium</span> <!-- Difficulty badge -->
+    </div>
+    <div class="add-task" onclick="addNewTask('todo')">+ Add new</div>
+  </div>
+
+  <!-- In Progress Column -->
+  <div class="category" id="inprogress" ondragover="allowDrop(event)" ondrop="drop(event)">
+    <h2>In Progress</h2>
+    <div class="task" draggable="true" ondragstart="drag(event)" id="task2">
+      <i class="fa-solid fa-bars-staggered task-icon"></i> <!-- Font Awesome icon -->
+      <strong>todo2</strong>
+      <p>todo2 description</p>
+      <span class="difficulty medium">Medium</span> <!-- Difficulty badge -->
+    </div>
+    <div class="add-task" onclick="addNewTask('inprogress')">+ Add new</div>
+  </div>
+
+  <!-- Under Review Column -->
+  <div class="category" id="underreview" ondragover="allowDrop(event)" ondrop="drop(event)">
+    <h2>Under Review</h2>
+    <div class="task" draggable="true" ondragstart="drag(event)" id="task3">
+      <i class="fa-solid fa-bars-staggered task-icon"></i> <!-- Font Awesome icon -->
+      <strong>todo3</strong>
+      <p>ejrsfsdnjkfsdn</p>
+      <span class="difficulty hard">Hard</span> <!-- Difficulty badge -->
+    </div>
+    <div class="add-task" onclick="addNewTask('underreview')">+ Add new</div>
+  </div>
+
+  <!-- Finished Column -->
+  <div class="category" id="finished" ondragover="allowDrop(event)" ondrop="drop(event)">
+    <h2>Finished</h2>
+    <div class="task" draggable="true" ondragstart="drag(event)" id="task4">
+      <i class="fa-solid fa-bars-staggered task-icon"></i> <!-- Font Awesome icon -->
+      <strong>todo4</strong>
+      <p>waeeddesfsdaf</p>
+      <span class="difficulty easy">Easy</span> <!-- Difficulty badge -->
+    </div>
+    <div class="add-task" onclick="addNewTask('finished')">+ Add new</div>
+  </div>
+</div>
+
+<script>
+  // Dragging functionality
+  function drag(event) {
+    event.dataTransfer.setData("text", event.target.id);
+  }
+
+  function allowDrop(event) {
+    event.preventDefault();
+    event.target.classList.add("drag-over");
+  }
+
+  function drop(event) {
+    event.preventDefault();
+    event.target.classList.remove("drag-over");
+    var data = event.dataTransfer.getData("text");
+    var task = document.getElementById(data);
+    if (event.target.classList.contains("category")) {
+      event.target.appendChild(task);
+    } else if (event.target.classList.contains("add-task")) {
+      event.target.parentElement.insertBefore(task, event.target);
+    }
+  }
+
+  // Add new task functionality
+  function addNewTask(categoryId) {
+    const taskDescription = prompt("Enter task description:");
+    const difficultyLevel = prompt("Enter task difficulty (easy, medium, hard):");
+    if (taskDescription && difficultyLevel) {
+      const category = document.getElementById(categoryId);
+      const newTask = document.createElement('div');
+      newTask.className = 'task';
+      newTask.draggable = true;
+      newTask.ondragstart = drag;
+
+      // Set difficulty class based on input
+      let difficultyClass = '';
+      if (difficultyLevel.toLowerCase() === 'easy') {
+        difficultyClass = 'easy';
+      } else if (difficultyLevel.toLowerCase() === 'medium') {
+        difficultyClass = 'medium';
+      } else if (difficultyLevel.toLowerCase() === 'hard') {
+        difficultyClass = 'hard';
+      }
+
+      newTask.innerHTML = `
+        <i class="fa-solid fa-bars-staggered task-icon"></i>
+        <strong>New Task</strong>
+        <p>${taskDescription}</p>
+        <span class="difficulty ${difficultyClass}">${difficultyLevel.charAt(0).toUpperCase() + difficultyLevel.slice(1)}</span>
+      `;
+      category.insertBefore(newTask, category.querySelector('.add-task'));
+    }
+  }
+</script>
+
+</body>
+</html>
+

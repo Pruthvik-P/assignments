@@ -1,0 +1,93 @@
+/* * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.app-container {
+    width: 90%;
+    max-width: 1200px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.task-board {
+    display: flex;
+    justify-content: space-between;
+}
+
+.category {
+    width: 30%;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.category h2 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.task-list {
+    min-height: 300px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: white;
+}
+
+.task {
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #fafafa;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.task.easy { background-color: #d4edda; }
+.task.medium { background-color: #ffeeba; }
+.task.hard { background-color: #f8d7da; }
+
+.task-creation {
+    margin-top: 30px;
+}
+
+#task-form {
+    display: flex;
+    flex-direction: column;
+}
+
+#task-form input,
+#task-form textarea,
+#task-form select {
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+#task-form button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+} */
