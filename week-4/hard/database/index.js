@@ -2,7 +2,9 @@ const mongoose = require('mongoose');
 const MONGODB_URI = process.env.MONGODB_URI;
 
 // Connect to MongoDB
-mongoose.connect(MONGODB_URI );
+mongoose.connect(MONGODB_URI )
+.then(()=> console.log('Connected to MongoDB'))
+.catch((err) => console.log('Failed to connect to MongoDB', err));
 
 // Define schemas
 
