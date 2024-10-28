@@ -53,12 +53,35 @@ router.post('/login',async (req, res) => {
      }
 });
 
-router.get('/todos', userMiddleware, (req, res) => {
+router.get('/todos', userMiddleware,async (req, res) => {
     // Implement logic for getting todos for a user
+    try {
+        const todos = await Todo.find({ userId: req.user.id });
+
+        res.json({
+            todo: todos
+        })
+    } catch(error){
+        res.status(403).json({
+            error:'Something went wrong'
+        })
+    }
 });
 
-router.post('/logout', userMiddleware, (req, res) => {
+router.post('/logout', userMiddleware,async (req, res) => {
     // Implement logout logic
+    try{
+        const token = req.headers['authorization'].split(' ')[1];
+
+        const exhasuttoken = new Expire({
+            token: token,
+            createdAt:Date.now()
+        })
+        await exhasuttoken.save();
+        res.json({ message: "User logged out successfully" });
+    } catch(err){
+        res.status(500).json({ message: "Something went wrong" });
+    }
 });
 
 module.exports = router

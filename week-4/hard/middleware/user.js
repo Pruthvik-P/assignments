@@ -9,7 +9,7 @@ function userMiddleware(req, res, next) {
         return res.status(401).json({ error: 'No token provided'});
     }
 
-    jwt.verify(token,SECRET_KEY,(err, decoode)=>{
+    jwt.verify(token,SECRET_KEY,(err, decode)=>{
         if(err){
             return res.status(401).json({ error: 'Invalid token'});
         }
